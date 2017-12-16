@@ -236,7 +236,10 @@ class SourceView(BaseVocabularyView):
     """Queries a field's source and returns JSON-formatted results."""
 
     def get_context(self):
-        return self.context.context
+        context = self.context.context
+        if isinstance(context, dict) or not context or context is NO_VALUE:
+            context = self.context
+        return context
 
     def get_vocabulary(self):
         widget = self.context
