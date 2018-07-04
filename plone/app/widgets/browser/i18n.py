@@ -23,7 +23,7 @@ class i18njs(BrowserView):
             catalog = td._data[mo_path]._catalog
         return catalog._catalog
 
-    def __call__(self, domain, language=None):
+    def __call__(self, domain=None, language=None):
         if domain is None:
             return
         if language is None:
