@@ -391,6 +391,7 @@ def get_tinymce_options(context, field, request):
             config['menubar'] = 'edit {table} format tools view insert'.format(
                 table=button_settings['table'],
             )
+            del config['contextmenu']
 
         # map Plone4 TinyMCE "styles" (raw format) to TinyMCE 4 "style_formats"
         # see http://www.tinymce.com/wiki.php/Configuration:style_formats
