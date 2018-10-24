@@ -179,6 +179,8 @@ def get_querystring_options(context, querystring_view):
 def get_tinymce_options(context, field, request):
     options = {}
 
+    if getattr(context, 'getPhysicalPath', None) is None:
+        context = getSite()
     utility = getToolByName(aq_inner(context), 'portal_tinymce', None)
     if utility:
         # Plone 4.3
@@ -318,7 +320,7 @@ def get_tinymce_options(context, field, request):
 
         button_settings['directionality'] = 'attribs' in config[
             'buttons'] and 'ltr rtl' or ''
-        
+
         # enable browser spell check by default:
         config['browser_spellcheck'] = True
 
