@@ -10,6 +10,7 @@ from plone.app.widgets.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
 from plone.supermodel.utils import mergedTaggedValueDict
 from types import FunctionType
+from z3c.form.interfaces import NO_VALUE
 from zope.component import getUtility
 from zope.component import queryAdapter
 from zope.component import queryUtility
@@ -235,7 +236,10 @@ class SourceView(BaseVocabularyView):
     """Queries a field's source and returns JSON-formatted results."""
 
     def get_context(self):
-        return self.context.context
+        context = self.context.context
+        if isinstance(context, dict) or not context or context is NO_VALUE:
+            context = self.context
+        return context
 
     def get_vocabulary(self):
         widget = self.context

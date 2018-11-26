@@ -333,7 +333,11 @@ class RelatedItemsDataConverter(BaseDataConverter):
         if not value:
             return self.field.missing_value
         separator = getattr(self.widget, 'separator', ';')
-        return separator.join([IUUID(o) for o in value if o])
+
+        if isinstance(value[0], unicode) or isinstance(value[0], str):
+            return separator.join(value)
+
+        return separator.join([IUUID(o) for o in value if o and IUUID(o, False)])
 
     def toFieldValue(self, value):
         """Converts from widget value to field.
@@ -611,7 +615,7 @@ class SelectWidget(BaseWidget, z3cform_SelectWidget):
             options['allowClear'] = True
 
         items = []
-        for item in self.items():
+        for item in self.items:
             if not isinstance(item['content'], basestring):
                 item['content'] = translate(
                     item['content'],
