@@ -333,9 +333,10 @@ class RelatedItemsDataConverter(BaseDataConverter):
         if not value:
             return self.field.missing_value
         separator = getattr(self.widget, 'separator', ';')
-
-        if isinstance(value[0], unicode) or isinstance(value[0], str):
-            return separator.join(value)
+        for v in value:
+            if isinstance(v, basestring):
+                return separator.join(value)
+            break
 
         return separator.join([IUUID(o) for o in value if o and IUUID(o, False)])
 
