@@ -635,6 +635,24 @@ class SelectWidget(BaseWidget, z3cform_SelectWidget):
             return []
         return self.request.get(self.name, default)
 
+    @property
+    def items(self):
+        items = super(SelectWidget, self).items
+        if not self.multiple or not (ISequence.providedBy(self.field) or
+                                     self.orderable):
+            return items
+        items = list(items)
+        selected = self.value
+        indexes = {t['value']: (i, t) for i, t in enumerate(items)}
+        # put the selected values at the top of the list options, in order
+        for val in reversed(selected):
+            if val in indexes:
+                index, term = indexes[val]
+                del items[index]
+                items.insert(0, term)
+        return items
+
+
 
 class AjaxSelectWidget(BaseWidget, z3cform_TextWidget):
     """Ajax select widget for z3c.form."""
