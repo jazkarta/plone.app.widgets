@@ -611,6 +611,15 @@ class SelectWidget(BaseWidget, z3cform_SelectWidget):
         if self.multiple:
             options['separator'] = self.separator
 
+        # default select2 escapeMarkup escapes html entities. We need
+        # unescaped entitities to show up in select options, so we pass
+        # our own function name. The ":fn:" prefix and suffix is used to
+        # remove the quotes from the html rendering of the options, so
+        # that we get a function name and not a string. Of course, the
+        # function dummyEscapeMarkup needs to then be defined in the
+        # js code of the page.
+        options['escapeMarkup'] = ":fn:dummyEscapeMarkup:fn:"
+
         # Allow to clear field value if it is not required
         if not self.required:
             options['allowClear'] = True

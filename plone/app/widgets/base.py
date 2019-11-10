@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy
 from lxml import etree
+from xml.sax.saxutils import unescape
 import json
 
 
@@ -96,8 +97,12 @@ class BaseWidget(object):
     def update(self):
         """Updating pattern_options in element `data-*` attribute."""
         if self.pattern_options:
-            self.el.attrib['data-' + self._klass_prefix + self.pattern] = \
-                json.dumps(self.pattern_options)
+            dumped = json.dumps(self.pattern_options)
+            # Hack to allow passing in a function name as a pattern option.
+            # This just gets rid of the quotes.
+            dumped = dumped.replace('":fn:', '')
+            dumped = dumped.replace(':fn:"', '')
+            self.el.attrib['data-' + self._klass_prefix + self.pattern] = dumped
 
     def render(self):
         """Renders the widget
@@ -179,6 +184,10 @@ class SelectWidget(BaseWidget):
             self.name = name
         if value is not None:
             self.value = value
+
+    def render(self):
+        self.update()
+        return unescape(etree.tostring(self.el))
 
     def _get_items(self):
         """Get list of possible options.
