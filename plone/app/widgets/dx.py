@@ -645,11 +645,13 @@ class SelectWidget(BaseWidget, z3cform_SelectWidget):
         selected = self.value
         indexes = {t['value']: (i, t) for i, t in enumerate(items)}
         # put the selected values at the top of the list options, in order
+        i = 0
         for val in reversed(selected):
             if val in indexes:
                 index, term = indexes[val]
-                del items[index]
+                del items[index + i]
                 items.insert(0, term)
+                i += 1
         return items
 
 
