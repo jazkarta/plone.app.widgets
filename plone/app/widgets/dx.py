@@ -652,8 +652,11 @@ class SelectWidget(BaseWidget, z3cform_SelectWidget):
                 index, term = indexes[val]
                 top.append(term)
                 to_delete.add(index)
-        items = top + [t for i, t in enumerate(items) if i not in to_delete]
-        return items
+
+        for index in reversed(sorted(to_delete)):
+            del items[index]
+
+        return top + items
 
 
 class AjaxSelectWidget(BaseWidget, z3cform_TextWidget):
