@@ -5795,7 +5795,7 @@ define('mockup-utils',[
       return {
         url: self.options.vocabularyUrl,
         dataType: 'JSON',
-        quietMillis: 100,
+        quietMillis: 350,
         data: function(term, page) {
           return self.getQueryData(term, page);
         },
@@ -22930,7 +22930,7 @@ define('mockup-patterns-relateditems',[
         })
       );
 
-      self.options.ajax = self.options.setupAjax.apply(self);
+      self.options.ajax = $.extend(self.options.setupAjax.apply(self), self.options.ajax || {});
 
       self.$el.wrap('<div class="pattern-relateditems-container" />');
       self.$container = self.$el.parents('.pattern-relateditems-container');
