@@ -5757,6 +5757,7 @@ define('mockup-utils',[
         criterias = self.options.baseCriteria.slice(0);
       }
       if (term && term[0] == '/') {
+        term = term.split('/@@')[0];
         criterias.push({
           i: 'path',
           o: 'plone.app.querystring.operation.string.path',
@@ -5779,7 +5780,7 @@ define('mockup-utils',[
           v: term
         });
       }
-      if (!(term &&term[0] == '/')) {
+      if (!(term && term[0] == '/')) {
         if(options.searchPath){
           criterias.push({
             i: 'path',
@@ -23020,7 +23021,6 @@ define('mockup-patterns-relateditems',[
         var value = $(element).val();
         if (value !== '') {
           var ids = value.split(self.options.separator);
-
           self.query.search(
             'UID', 'plone.app.querystring.operation.list.contains', ids,
             function(data) {
